@@ -1,6 +1,6 @@
 
-#include "vector"
 using namespace std;
+#include "vector"
 
 void delete11 ( vector < int > & v ) {
     for (int i = 0; i < v.size(); i++) {
