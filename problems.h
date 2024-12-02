@@ -1,55 +1,81 @@
 
-
-#include <vector>
+#include "vector"
 using namespace std;
 
-void delete11(std::vector<int>& v) {
-    v.erase(std::remove_if(v.begin(), v.end(), [](int x) { return x % 11 == 0; }), v.end());
+void delete11 ( vector < int > & v ) {
+    for (int i = 0; i < v.size(); i++) {
+        if (v[i] % 11 == 0) {
+            v.erase(v.begin() + i);
+            i--;
+        }
+    }
 }
 
-void insertMany(std::vector<int>& v, int y, int x) {
-    int middle = (v.size() % 2 == 0) ? v.size() / 2 : (v.size() / 2) + 1;
-    v.insert(v.begin() + middle, y, x);
+void insertMany ( vector < int > &v , int a , int b ) {
+    for (int i = 0; i < a; i++) {
+        int middle {};
+        if (v.size() % 2 == 0) {
+            middle = v.size() / 2;
+        }
+        else {
+            middle = v.size() / 2 + 1;
+        }
+        v.insert(v.begin() + middle, b);
+    }
 }
+
 int* allocateAndSet(int a, int b) {
-    if (a > b) {
+    if (a >= b) {
         return nullptr;
     }
-    int size = b - a + 1;
-    int* arr = new int[size];
+
+    const int size = b - a+1;
+    int *arr= new int[size];
+
     for (int i = 0; i < size; i++) {
-        arr[i] = a + i;
+        arr[i] = a+i;
     }
+
     return arr;
 }
-void deallocate(int* arr) {
+
+void deallocate(int* &arr) {
     delete[] arr;
     arr = nullptr;
 }
-int* reallocate(int* arr, int N, int n) {
-    int newSize = N - n;
-    int* newArr = new int[newSize];
-    for (int i = 0; i < newSize; i++) {
-        newArr[i] = arr[n + i];
+
+
+int *reallocate(int *arr, int N, int n) {
+    int size = N - n;
+    int *newArr = new int[size];
+    int index = 0;
+
+    for (int i = n; i < N; i++) {
+        newArr[index] = arr[i];
+        index++;
     }
+
     delete[] arr;
+
     return newArr;
 }
-int** transposed(int** arr, int n, int m) {
-    // Allocate memory for transposed matrix
-    int** transposedArr = new int*[m];
+
+int **transposed(int **arr, int n, int m) {
+    int **newArr = new int*[m];
     for (int i = 0; i < m; i++) {
-        transposedArr[i] = new int[n];
+        newArr[i] = new int[n];
     }
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
-            transposedArr[j][i] = arr[i][j];
+            newArr[j][i] = arr[i][j];
         }
     }
-    for (int i = 0; i < n; i++) {
-        delete[] arr[i];
+    return newArr;
+}
+void deallocateMatrix(int**& matrix, int rows) {
+    for (int i = 0; i < rows; i++) {
+        delete[] matrix[i];
     }
-    delete[] arr;
-
-    return transposedArr;
+    delete[] matrix;
+    matrix = nullptr;
 }
